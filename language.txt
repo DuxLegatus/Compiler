@@ -1,0 +1,33 @@
+- Variable declarations with `var`
+- Arithmetic expressions: +, -, *, /, ()
+- Printing with `print`
+
+
+Statements:
+    var <identifier> = <expression>
+    print <expression>
+
+Expressions:
+    <number>
+    <identifier>
+    (<expression>)
+    <expression> +|-|*|/ <expression
+
+
+Program 1:
+var a = 3
+var b = a + 4 * 2
+print b
+
+Program 2:
+var x = (1 + 2) * 5
+print x
+
+
+var, print
+
+
+- if/else
+- while loops
+- functions
+- comparison operators: >, <, ==
