@@ -36,3 +36,32 @@ class String:
         self.value = value
     def __repr__(self):
         return f"String(value={self.value})"
+    
+class IfStatement:
+    def __init__(self, condition, body, else_body=None):
+        self.condition = condition
+        self.body = body
+        self.else_body = else_body
+
+    def __repr__(self):
+        return f"IfStatement(condition={self.condition}, body={self.body}, else_body={self.else_body})"
+
+class WhileLoop:
+    def __init__(self, condition, body):
+        self.condition = condition 
+        self.body = body     
+    def __repr__(self):
+        return f"WhileLoop(condition={self.condition}, body={self.body})"
+
+
+class ForLoop:
+    def __init__(self, init, condition, update, body):
+        self.init = init
+        self.condition = condition
+        self.update = update
+        self.body = body  
+
+    def __repr__(self):
+        return f"ForLoop(init={self.init}, condition={self.condition}, update={self.update}, body={self.body})"
+
+

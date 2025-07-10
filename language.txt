@@ -28,6 +28,19 @@ var, print
 
 
 - if/else
+    var x = 5
+    if x > 3
+        print "x is big"
+    else
+        print "x is small"
 - while loops
+    var i = 0
+    while i < 5
+        print i
+        var i = i + 1
+
+- for loops
+    for var i = 0; i < 5; i = i + 1
+        print i
 - functions
 - comparison operators: >, <, ==

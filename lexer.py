@@ -1,9 +1,14 @@
 import re
 
-tokens_types = ["VAR","PRINT","IDENTIFIER","NUMBER","OPERATOR","EQUAL","LPAREN","RPAREN","COMMENT"]
+tokens_types = ["VAR","PRINT","IDENTIFIER","NUMBER","OPERATOR","EQUAL","LPAREN","RPAREN","LBRACE", "RBRACE","COMMENT","IF","ELSE","WHILE","FOR","COMPARISION"]
 token_regex = (
     r'(?P<VAR>var)|'
     r'(?P<PRINT>print)|'
+    r'(?P<IF>if)|'
+    r'(?P<ELSE>else)|'
+    r'(?P<WHILE>while)|'
+    r'(?P<FOR>for)|'
+    r'(?P<COMPARISON>(==|!=|<=|>=|<|>))|'
     r'(?P<IDENTIFIER>[a-zA-Z_][a-zA-Z0-9_]*)|'
     r'(?P<NUMBER>[0-9]+)|'
     r'(?P<STRING>"([^"\\]|\\.)*"|\'([^\'\\]|\\.)*\')|'
@@ -11,6 +16,8 @@ token_regex = (
     r'(?P<EQUAL>=)|'
     r'(?P<LPAREN>\()|'
     r'(?P<RPAREN>\))|'
+    r'(?P<LBRACE>\{)|'
+    r'(?P<RBRACE>\})|'
     r'(?P<COMMENT>#.*)|'
     r'(?P<WHITESPACE>\s+)'
 )

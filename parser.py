@@ -1,4 +1,4 @@
-from ast_1 import VarDeclaration,Identifier,String,Number,PrintStatement,BinaryOperation
+from ast_1 import VarDeclaration,Identifier,String,Number,PrintStatement,BinaryOperation,IfStatement,WhileLoop,ForLoop
 
 
 class Parser:
@@ -29,8 +29,22 @@ class Parser:
             return self.parse_var_declaration()
         elif token.token_type == "PRINT":
             return self.parse_print_statement()
+        elif token.token_type == "IF":
+            return self.parse_if_statement()
+        elif token.token_type == "WHILE":
+            return self.parse_while_loop()
+        elif token.token_type == "FOR":
+            return self.parse_for_loop()
         else:
             raise SyntaxError(f"Unexpected token {token.token_type} at line {token.line_number}")
+    def parse_block(self):
+        statements = []
+        self.consume("LBRACE")
+        while self.current() and self.current().token_type != "RBRACE":
+            statements.append(self.parse_statement())
+        self.consume("RBRACE")
+        return statements
+
     def parse_var_declaration(self):
         self.consume("VAR")
         ident = self.consume("IDENTIFIER")
@@ -42,6 +56,50 @@ class Parser:
         self.consume("PRINT")
         expr = self.parse_expression()
         return PrintStatement(expression=expr)
+    
+    def parse_if_statement(self):
+        self.consume("IF")
+        condition = self.parse_comparison()
+        
+        if self.current().token_type == "LBRACE":
+            body = self.parse_block()
+        else:
+            body = [self.parse_statement()]
+
+        else_body = None
+        if self.current() and self.current().token_type == "ELSE":
+            self.consume("ELSE")
+            if self.current().token_type == "LBRACE":
+                else_body = self.parse_block()
+            else:
+                else_body = [self.parse_statement()]
+        
+        return IfStatement(condition, body, else_body)
+    
+    def parse_while_loop(self):
+        self.consume("WHILE")
+        condition = self.parse_comparison()
+        if self.current().token_type == "LBRACE":
+            body = self.parse_block()
+        else:
+            body = [self.parse_statement()]
+        return WhileLoop(condition, body)
+    def parse_assignment(self):
+        ident = self.consume("IDENTIFIER")
+        self.consume("EQUAL")
+        expr = self.parse_expression()
+
+        return VarDeclaration(name=Identifier(ident.value), value=expr)
+    def parse_for_loop(self):
+        self.consume("FOR")
+        init = self.parse_statement()
+        condition = self.parse_comparison()
+        update = self.parse_assignment()
+        if self.current().token_type == "LBRACE":
+            body = self.parse_block()
+        else:
+            body = [self.parse_statement()]
+        return ForLoop(init,condition,update, body)
     def parse_factor(self):
         token = self.current()
 
@@ -65,6 +123,17 @@ class Parser:
 
         else:
             raise SyntaxError(f"Unexpected token {token.token_type} at line {token.line_number}")
+    def parse_comparison(self):
+        left = self.parse_expression()
+
+        token = self.current()
+        if token and token.token_type == "COMPARISON":
+            op = token.value
+            self.consume("COMPARISON")
+            right = self.parse_expression()
+            return BinaryOperation(left=left, operator=op, right=right)
+
+        return left
     def parse_term(self):
         left = self.parse_factor()
 
